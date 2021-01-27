@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class House:
+class Property:
     """Dataclass that represents a property.
     """
 
@@ -25,7 +25,7 @@ class House:
     building_state: str = None
 
     def __str__(self) -> str:
-        return "House"
+        return "Property" + f"({self.property_type})" if self.property_type else ""
 
-    def csv(self):
+    def to_csv(self) -> str:
         pass
