@@ -24,8 +24,20 @@ class Property:
     has_swimming_pool: bool = None
     building_state: str = None
 
+    # Counter to keep set id
+    count: int = 0
+
+    def __post_init__(self):
+        """Everything that needs to happen after init. Sets id and validates."""
+        self.id = Property.count
+        Property.count += 1
+
     def __str__(self) -> str:
-        return "Property" + f"({self.property_type})" if self.property_type else ""
+        return (
+            f"Property {self.id}" + f" ({self.property_type})"
+            if self.property_type
+            else ""
+        )
 
     def to_csv(self) -> str:
         pass
