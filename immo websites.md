@@ -11,7 +11,7 @@ Among them :
 - https://www.immoweb.be/
 - https://www.logic-immo.be/
 - https://www.zimmo.be/
-- https://www.century21.be/
+- https://www.century21.be/     (no pop-up)
 - https://www.era.be/
 - https://immo.vlan.be/
 
