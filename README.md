@@ -9,7 +9,7 @@ The project is structured as follows:
 ```
 challenge-collecting-data-group5/
 |-- main.py :to run all the scripts in the *scrapers* directory
-|-- house_structure.py :explicit the data structure of any property
+|-- property_structure.py :explicit the data structure of any property
 |-- scrapers/ :directory contains all the scripts to scrap the websites
 |-- test/
 |   |-- init.py
