@@ -26,10 +26,9 @@ The deadline to complete it is scheduled to `29/01/2021 at 4 p.m.`
 
 ### How?
 - [x] Create the project structure
-- [ ] scrape real estate websites
-- [ ] build the Belgian real estate database
-- [ ] export the data into csv-file
-
+- [ ] Scrape real estate websites
+- [ ] Build the Belgian real estate database
+- [ ] Export the data into csv-file
 
 ### Who?
 This project is carried out by **Group 5** from Theano 2.27 promotion at BeCode.
@@ -39,4 +38,3 @@ Group 5 is comprised of:
 - Vincent Rolin
 
 ### Pending things to do
-
