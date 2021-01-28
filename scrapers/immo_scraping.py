@@ -34,6 +34,13 @@ class ImmoPropScraper(ImmoScraper):
             "This method should be implemented for each individual website."
         )
 
+    def format_to_csv(self) -> str:
+        """
+        Method that formats the property information into a comma-delimited string 
+        in order to be exported to a csv file.
+        """
+        property_info_list = self._property.__dict__.values()
+        return ','.join(str(info) for info in property_info_list)
 
 class ImmoListScraper(ImmoScraper):
     """Scrape an index on the site to get links."""
