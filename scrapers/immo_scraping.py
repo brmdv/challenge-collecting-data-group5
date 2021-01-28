@@ -40,7 +40,7 @@ class ImmoListScraper(ImmoScraper):
 
     def __init__(self, page_url: str):
         super().__init__(page_url)
-        self._links = []
+        self._links: List[str] = []
 
     def get_links(self) -> List[str]:
         """Returns a list of the scraped urls for listed properties."""
@@ -59,3 +59,10 @@ class ImmoListScraper(ImmoScraper):
         raise NotImplementedError(
             "This method should be implemented for each individual website."
         )
+
+    def write_links(self, filename: str):
+        """Save collected links to txt file."""
+        with open(filename, "w") as outfile:
+            for link in self.get_links():
+                outfile.write(link + "\n")
+        print(f"{len(self._links)} links from {self.page_url} written to {filename}.")
