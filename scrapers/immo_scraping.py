@@ -8,6 +8,10 @@ class ImmoScraper:
     """Base class for an immo scraper. All other scrapers should inherit from this one."""
 
     def __init__(self, page_url: str):
+        """Create an ImmoScraper.
+
+        :param page_url: Url to download data from.
+        """
         self.page_url = page_url
 
     def _download_page(self):
@@ -23,6 +27,10 @@ class ImmoPropScraper(ImmoScraper):
     """Gets all information for a certain house/appartment."""
 
     def __init__(self, page_url: str):
+        """Create a scraper for a property.
+
+        :param page_url: Url to download data from.
+        """
         super().__init__(page_url)
         self._property = Property()
 
@@ -39,6 +47,10 @@ class ImmoListScraper(ImmoScraper):
     """Scrape an index on the site to get links."""
 
     def __init__(self, page_url: str):
+        """Create a scraper to get a list of properties from an immo site.
+
+        :param page_url: Url to download data from.
+        """
         super().__init__(page_url)
         self._links: List[str] = []
 
@@ -61,7 +73,10 @@ class ImmoListScraper(ImmoScraper):
         )
 
     def write_links(self, filename: str):
-        """Save collected links to txt file."""
+        """Save collected links to txt file.
+
+        :param filename: Path to filename. This will be overwritten without warning.
+        """
         with open(filename, "w") as outfile:
             for link in self.get_links():
                 outfile.write(link + "\n")
