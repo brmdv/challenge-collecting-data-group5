@@ -1,6 +1,5 @@
-from property_structure import Property
+from scrapers.immohans import ImmoHansProp
 
-my_house = Property(property_type="house")
-my_appartment = Property(property_type="appartment")
-
-print(my_house, my_appartment)
+test = ImmoHansProp("https://www.hansimmo.be/woning-te-koop-in-edegem/9675")
+test.scrape()
+pass
