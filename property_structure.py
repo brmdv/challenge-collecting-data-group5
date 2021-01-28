@@ -3,13 +3,12 @@ from dataclasses import dataclass
 
 @dataclass
 class Property:
-    """Dataclass that represents a property.
-    """
+    """Dataclass that represents a property."""
 
     locality: str = None
     property_type: str = None
     property_subtype: str = None
-    price: int = None
+    price: float = None
     sale_type: str = None
     number_rooms: int = None
     area: float = None
@@ -25,12 +24,12 @@ class Property:
     building_state: str = None
 
     # Counter to keep set id
-    count: int = 0
+    _count: int = 0
 
     def __post_init__(self):
         """Everything that needs to happen after init. Sets id and validates."""
-        self.id = Property.count
-        Property.count += 1
+        self.id = Property._count
+        Property._count += 1
 
     def __str__(self) -> str:
         return (

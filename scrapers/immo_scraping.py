@@ -33,6 +33,7 @@ class ImmoPropScraper(ImmoScraper):
         """
         super().__init__(page_url)
         self._property = Property()
+        self._scraped = False
 
     def scrape(self):
         """Reimplement this method for every scraper. It should get all needed
@@ -41,6 +42,10 @@ class ImmoPropScraper(ImmoScraper):
         raise NotImplementedError(
             "This method should be implemented for each individual website."
         )
+
+    def get_property(self):
+        """Get the internal Property object."""
+        return self._property
 
 
 class ImmoListScraper(ImmoScraper):
