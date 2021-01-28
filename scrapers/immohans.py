@@ -59,11 +59,16 @@ class ImmoHansProp(ImmoPropScraper):
         def get_detail(name):
             """Get detail from table by name."""
             # find cell
-            tag = details_section.select_one(
-                "dt", text=re.compile(".*" + name + ".*", re.IGNORECASE)
-            )
+            tag = details_section.find("dt", text=re.compile(name, re.IGNORECASE))
+            if tag is None:
+                return False
             # info is in sibling dd tag
-            return tag.parent.dd.text.strip()
+            data = tag.parent.dd.text.strip()
+            # convert booleans
+            if data in ["ja", "nee"]:
+                return True if data == "ja" else "False"
+            else:
+                return data
 
         # price
         price = get_detail("prijs")
@@ -71,5 +76,28 @@ class ImmoHansProp(ImmoPropScraper):
             price.replace("€ ", "").replace(".", "").replace(",", ".")
         )  # convert to English number format
         self._property.price = float(price)
+
+        # number of rooms
+        rooms = int(get_detail("slaapkamer"))
+        self._property.number_rooms = rooms
+
+        # area
+        area = get_detail("bewoonbare opp")
+        area = float(price.replace(" m²", "").replace(".", "").replace(",", "."))
+        self._property.area = area
+
+        # Kitchen
+        kitchen_info = get_detail("type keuken")
+        self._property.fully_equipped_kitchen = kitchen_info
+
+        # Is furnished? Not specified on website but probably not
+        self._property.is_furnished = False
+
+        # for open fire, just look if mentioned in description
+        self._property.has_open_fire = (
+            "open haard" in soup.select_one("#description").text.lower()
+        )
+
+        self._property.has_terrace = get_detail("terras")
 
         pass
