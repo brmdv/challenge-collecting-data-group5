@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup as bs
+import re
 
 from scrapers.immo_scraping import ImmoListScraper, ImmoPropScraper
 
@@ -53,5 +54,22 @@ class ImmoHansProp(ImmoPropScraper):
         else:
             self._property.property_type = "other"
             self._property.property_subtype = property_type
+
+        # simple function to get values from details table
+        def get_detail(name):
+            """Get detail from table by name."""
+            # find cell
+            tag = details_section.select_one(
+                "dt", text=re.compile(".*" + name + ".*", re.IGNORECASE)
+            )
+            # info is in sibling dd tag
+            return tag.parent.dd.text.strip()
+
+        # price
+        price = get_detail("prijs")
+        price = (
+            price.replace("€ ", "").replace(".", "").replace(",", ".")
+        )  # convert to English number format
+        self._property.price = float(price)
 
         pass
