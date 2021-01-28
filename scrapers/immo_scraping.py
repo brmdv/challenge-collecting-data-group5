@@ -45,6 +45,7 @@ class ImmoPropScraper(ImmoScraper):
 
     def get_property(self):
         """Get the internal Property object."""
+        self.scrape()
         return self._property
 
 

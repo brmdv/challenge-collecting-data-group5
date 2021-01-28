@@ -1,10 +1,12 @@
+from scrapers.immo_scraping import ImmoPropScraper
 from scrapers.immohans import ImmoHansProp, ImmoHansList
 
-list_houses = ImmoHansList("https://www.hansimmo.be/te-koop").get_links()
-test = ImmoHansProp("https://www.hansimmo.be/woning-te-koop-in-edegem/9675")
-test.scrape()
+hans_links = ImmoHansList("https://www.hansimmo.be/te-koop")
+hans_links.scrape()
+hans_links.write_links("data/hans.txt")
+list_house_scrapers = [ImmoHansProp(link) for link in hans_links.get_links()]
+all_houses = [house.get_property() for house in list_house_scrapers]
 
-all_houses = [ImmoHansProp(house).get_property() for house in list_houses]
 for house in all_houses:
     house
 pass

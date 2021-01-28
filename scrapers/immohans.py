@@ -18,7 +18,11 @@ class ImmoHansList(ImmoListScraper):
 
         # Get listed links
         link_tags = soup.main.find_all("a", attrs={"class": "property-content"})
-        self._links = [link.attrs["href"] for link in link_tags]
+        self._links = [
+            link.attrs["href"]
+            for link in link_tags
+            if not "referenties" in link.attrs["href"]
+        ]
 
 
 class ImmoHansProp(ImmoPropScraper):
