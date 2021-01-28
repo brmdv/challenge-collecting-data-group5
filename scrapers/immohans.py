@@ -49,24 +49,25 @@ class ImmoHansProp(ImmoPropScraper):
         if "woning" in property_type:
             self._property.property_type = "house"
         elif property_type in ["appartement", "loft", "gelijkvloers"]:
-            self._property.property_type = "appartment"
+            self._property.property_type = "apartment"
             self._property.property_subtype = property_type
         else:
             self._property.property_type = "other"
             self._property.property_subtype = property_type
 
-        # simple function to get values from details table
+        # simple helper function to get values from details table
         def get_detail(name):
             """Get detail from table by name."""
             # find cell
             tag = details_section.find("dt", text=re.compile(name, re.IGNORECASE))
+            # if not found, it's probably False
             if tag is None:
                 return False
             # info is in sibling dd tag
             data = tag.parent.dd.text.strip()
             # convert booleans
             if data in ["ja", "nee"]:
-                return True if data == "ja" else "False"
+                return True if data == "ja" else False
             else:
                 return data
 
@@ -99,5 +100,17 @@ class ImmoHansProp(ImmoPropScraper):
         )
 
         self._property.has_terrace = get_detail("terras")
+        self._property.has_garden = get_detail("tuin")
 
+        perceel_opp = get_detail("Perceel opp")
+        if perceel_opp:
+            self._property.land_plot_area = float(
+                perceel_opp.replace(" m²", "").replace(".", "").replace(",", ".")
+            )
+
+        # swimming pool
+        self._property.has_swimming_pool = get_detail("zwembad")
+
+        # Building state
+        self._property.building_state = get_detail("Staat")
         pass
