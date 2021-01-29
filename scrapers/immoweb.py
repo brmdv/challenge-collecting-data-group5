@@ -60,15 +60,24 @@ class ImmoWebList(ImmoListScraper):
         self._links = []
 
         # Get links for each page
-        for _ in range(10):
-            links_tags = driver.find_elements_by_xpath("//a[@class='card__title-link']")
-            self._links.extend([link.get_attribute("href") for link in links_tags])
+        for _ in range(334):
+            # Initialize attempts count
+            attempts_count = 0
+            while attempts_count < 5:
+                try:
+                    links_tags = driver.find_elements_by_xpath("//a[@class='card__title-link']")
+                    self._links.extend([link.get_attribute("href") for link in links_tags])
+                    break
+
+                except:
+                    attempts_count += 1
 
             # Navigate to next page
             python_label_button = driver.find_elements_by_xpath(
                 "//a[@class='pagination__link pagination__link--next button button--text button--size-small']"
             )[0]
             python_label_button.click()
+
 
         # print(self._links)
         driver.close()
@@ -109,13 +118,13 @@ class ImmoWebProp(ImmoPropScraper):
         self._property.locality = self.get_detail(soup, "locality")
         # if locality not specified in the info table, get it from the url
         if self._property.locality is None:
-            self._property.locality = self._property.page_url.split("/")[7]
+            self._property.locality = self.page_url.split("/")[7]
 
         # 2. property_type: str = None
         property_type = soup.select_one(".classified__title").text.strip().lower()
-        if "house" in property_type:
+        if "house" in property_type or "house" in self.page_url:
             self._property.property_type = "house"
-        elif "apartment" in property_type:
+        elif "apartment" in property_type or "apartment" in self.page_url:
             self._property.property_type = "apartment"
 
         # 3. property_subtype: str = None
@@ -160,7 +169,10 @@ class ImmoWebProp(ImmoPropScraper):
         price = price.replace("€", "").replace(
             ",", ""
         )  # convert into right number format
-        self._property.price = float(price)
+        # take the min price available
+        min_price = min(re.findall("(\d+)", price))
+        self._property.price = float(min_price)
+
 
         # 5. sale_type: str = None
 
@@ -202,14 +214,24 @@ class ImmoWebProp(ImmoPropScraper):
         if fireplace is not None:
             self._property.has_open_fire = True if int(fireplace) > 0 else False
 
-        # 11. has_terrace: bool = None
+        # 11. has_terrace: bool = None ; # 12. terrace_area: float = None
         terrace = self.get_detail(soup, "Terrace")
         # Determine if there is a terrace
         if terrace is not None:
-            self._property.has_terrace = True if float(terrace) > 0 else False
-
-        # 12. terrace_area: float = None
-        self._property.terrace_area = float(terrace) if terrace else None
+            if terrace == 'yes':
+                self._property.has_terrace = True
+                self._property.terrace_area = None # None as the terrace area is not specified
+            elif terrace == 'no':
+                self._property.has_terrace = False
+                self._property.terrace_area = 0
+            else:
+                try:
+                    terrace = float(terrace)
+                    self._property.has_terrace = True if terrace > 0 else False
+                    self._property.terrace_area = terrace
+                except:
+                    self._property.has_terrace = None
+                    self._property.terrace_area = None
 
         # 13. has_garden: bool = None
         garden = self.get_detail(soup, "Garden")

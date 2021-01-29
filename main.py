@@ -8,4 +8,4 @@ immoweb_links.write_links("data/immoweb.txt")
 list_house_scrapers = [ImmoWebProp(link) for link in immoweb_links.get_links()]
 all_houses = [house.scrape() for house in list_house_scrapers]
 all_houses = [house.get_property() for house in list_house_scrapers]
-print(all_houses)
+print(all_houses[:10])
