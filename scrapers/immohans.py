@@ -75,12 +75,25 @@ class ImmoHansProp(ImmoPropScraper):
             else:
                 return data
 
+        # helper function for Dutch numbers
+        def convert_number(text: str) -> float:
+            """Convert written number to float"""
+            # get number, throw away units
+            match = re.search(r"([0-9.,]+)", text)
+            if match:
+                text = match.group(1)
+            # ge from dutch 1.000.000,00 to 1000000.00
+            text = text.replace(".", "").replace(",", ".")
+            # convert to float if possible
+            try:
+                return float(text)
+            except:
+                return text
+
         # price
         price = get_detail("prijs")
-        price = (
-            price.replace("€ ", "").replace(".", "").replace(",", ".")
-        )  # convert to English number format
-        self._property.price = float(price)
+        price = convert_number(price)
+        self._property.price = price
 
         # number of rooms
         rooms = int(get_detail("slaapkamer"))
@@ -88,10 +101,10 @@ class ImmoHansProp(ImmoPropScraper):
 
         # area
         area = get_detail("bewoonbare opp")
-        area = float(price.replace(" m²", "").replace(".", "").replace(",", "."))
+        area = convert_number(area)
         self._property.area = area
 
-        # Kitchen
+        # Kitchen, this will be in Dutch
         kitchen_info = get_detail("type keuken")
         self._property.fully_equipped_kitchen = kitchen_info
 
@@ -103,8 +116,19 @@ class ImmoHansProp(ImmoPropScraper):
             "open haard" in soup.select_one("#description").text.lower()
         )
 
-        self._property.has_terrace = get_detail("terras")
-        self._property.has_garden = get_detail("tuin")
+        self._property.has_terrace = bool(get_detail("terras"))
+        if self._property.has_terrace:
+            terras_area = get_detail("Terras 1")
+            if terras_area:
+                self._property.terrace_area = convert_number(terras_area)
+
+        self._property.has_garden = bool(get_detail("tuin"))
+        if self._property.has_garden:
+            try:
+                # garden area is saved in same cell
+                self._property.garden = convert_number(garden_area)
+            except:
+                pass
 
         perceel_opp = get_detail("Perceel opp")
         if perceel_opp:
@@ -115,6 +139,6 @@ class ImmoHansProp(ImmoPropScraper):
         # swimming pool
         self._property.has_swimming_pool = get_detail("zwembad")
 
-        # Building state
+        # Building state: for now just copy dutch decription
         self._property.building_state = get_detail("Staat")
         pass
