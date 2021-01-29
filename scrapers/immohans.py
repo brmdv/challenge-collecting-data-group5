@@ -101,20 +101,26 @@ class ImmoHansProp(ImmoPropScraper):
 
         # area
         area = get_detail("bewoonbare opp")
-        area = convert_number(area)
-        self._property.area = area
+        if area:
+            area = convert_number(area)
+            self._property.area = area
 
         # Kitchen, this will be in Dutch
         kitchen_info = get_detail("type keuken")
-        self._property.fully_equipped_kitchen = kitchen_info
+        if kitchen_info:
+            self._property.fully_equipped_kitchen = kitchen_info
 
         # Is furnished? Not specified on website but probably not
         self._property.is_furnished = False
 
         # for open fire, just look if mentioned in description
-        self._property.has_open_fire = (
-            "open haard" in soup.select_one("#description").text.lower()
-        )
+        try:
+            self._property.has_open_fire = (
+                "open haard" in soup.select_one("#description").text.lower()
+            )
+        except:
+            self._property.has_open_fire = False
+            pass
 
         self._property.has_terrace = bool(get_detail("terras"))
         if self._property.has_terrace:
