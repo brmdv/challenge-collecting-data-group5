@@ -32,7 +32,7 @@ class ImmoPropScraper(ImmoScraper):
         :param page_url: Url to download data from.
         """
         super().__init__(page_url)
-        self._property = Property()
+        self._property = Property(source_url=page_url)
 
     def scrape(self):
         """Reimplement this method for every scraper. It should get all needed
