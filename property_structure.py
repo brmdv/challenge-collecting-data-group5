@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Dict
 
 
 @dataclass
@@ -24,14 +25,6 @@ class Property:
     number_facades: int = None
     has_swimming_pool: bool = None
     building_state: str = None
-
-    # Counter to keep set id
-    _count: int = 0
-
-    def __post_init__(self):
-        """Everything that needs to happen after init. Sets id and validates."""
-        self.id = Property._count
-        Property._count += 1
 
     def __str__(self) -> str:
         return (

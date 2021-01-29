@@ -1,0 +1,22 @@
+locality,property_type,property_subtype,price,sale_type,number_rooms,area,fully_equipped_kitchen,is_furnished,has_open_fire,has_terrace,terrace_area,has_garden,garden_area,land_surface,land_plot_area,number_facades,has_swimming_pool,building_state,_count,id
+Antwerpen,apartment,loft,699000.0,,3,338.0,Kasten met toestellen,False,False,True,40.0,False,,,,,False,Deels te renoveren,0,0
+Edegem,house,,325000.0,,1,88.0,Kasten met toestellen,False,False,False,,False,,,166.0,,False,Deels te renoveren,0,1
+Stabroek,house,,399000.0,,3,242.0,Alle comfort,False,False,True,20.0,False,,,345.0,,False,Gerenoveerd,0,2
+Antwerpen,other,opbrengsteigendom,749000.0,,3,314.0,False,False,False,True,10.0,False,,,84.0,,False,Gerenoveerd,0,3
+Berchem,apartment,gelijkvloers,325900.0,,2,107.0,Volledig ingebouwd,False,False,True,21.0,False,,,,,False,Gerenoveerd,0,4
+Antwerpen,apartment,appartement,349900.0,,2,115.0,Hyper-geïnstalleerd,False,False,True,6.0,False,,,,,False,Gerenoveerd,0,5
+Antwerpen,apartment,appartement,349900.0,,2,115.0,Hyper-geïnstalleerd,False,False,True,6.0,False,,,,,False,Gerenoveerd,0,6
+Deurne,house,,285000.0,,4,161.0,Alle comfort,False,False,False,,False,,,98.0,,False,Direct bewoonbaar,0,7
+Deurne,other,opbrengsteigendom,285000.0,,4,161.0,Alle comfort,False,False,False,,False,,,98.0,,False,Direct bewoonbaar,0,8
+Antwerpen,apartment,appartement,164900.0,,2,88.0,Kasten met toestellen,False,False,True,4.0,False,,,,,False,Direct bewoonbaar,0,9
+Antwerpen,apartment,appartement,298000.0,,2,102.0,False,False,False,True,3.0,False,,,,,False,Direct bewoonbaar,0,10
+Borsbeek,other,gemengd gebouw,950000.0,,0,152.0,Kasten met toestellen,False,False,True,43.0,False,,,932.0,,False,Direct bewoonbaar,0,11
+Deurne,apartment,appartement,169000.0,,2,96.0,Alle comfort,False,False,True,4.0,False,,,100.0,,False,Direct bewoonbaar,0,12
+Kapellen,house,,325000.0,,2,116.0,Alle comfort,False,False,True,30.0,True,,,,,False,Direct bewoonbaar,0,13
+Borgerhout,apartment,appartement,159000.0,,2,108.0,Enkel kasten,False,False,True,3.0,False,,,,,False,Direct bewoonbaar,0,14
+Sint-antonius,house,,379000.0,,2,120.0,Geïnstalleerd,False,False,True,30.0,True,,,,,False,Direct bewoonbaar,0,15
+Stabroek,apartment,appartement,252475.0,,2,84.0,Alle comfort,False,False,True,,True,,,,,False,Nieuw,0,16
+Stabroek,apartment,appartement,252475.0,,2,84.0,Alle comfort,False,False,True,,True,,,,,False,Nieuw,0,17
+Stabroek,apartment,gelijkvloers,289313.0,,2,102.0,Alle comfort,False,False,True,,True,,,,,False,Nieuw,0,18
+Stabroek,apartment,gelijkvloers,289313.0,,2,102.0,Alle comfort,False,False,True,,True,,,,,False,Nieuw,0,19
+Antwerpen,apartment,appartement,169000.0,,2,85.0,Kasten met toestellen,False,False,True,6.0,False,,,,,False,Direct bewoonbaar,0,20

@@ -53,4 +53,9 @@ for t in threads:
     t.join()
 
 results = [thread.scraper.get_property() for thread in threads]
-pass
+
+with open("data/out.csv", "w") as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=results[0].__dict__.keys())
+    writer.writeheader()
+    for res in results:
+        writer.writerow(res.__dict__)
