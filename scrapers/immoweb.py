@@ -60,7 +60,7 @@ class ImmoWebList(ImmoListScraper):
         self._links = []
 
         # Get links for each page
-        for _ in range(2):
+        for _ in range(10):
             links_tags = driver.find_elements_by_xpath("//a[@class='card__title-link']")
             self._links.extend([link.get_attribute("href") for link in links_tags])
 
@@ -86,8 +86,8 @@ class ImmoWebProp(ImmoPropScraper):
         if tag is None:
             return None
         # Info is in sibling tag
-        data = tag.next_sibling.next_sibling.contents[0].strip()
-        
+        data = tag.next_sibling.next_sibling.contents[0].strip().lower()
+
         # Convert booleans
         if data in ["yes", "no"]:
             return True if data == "yes" else "False"
@@ -103,14 +103,13 @@ class ImmoWebProp(ImmoPropScraper):
         # parse data
         soup = bs(self._data, features="lxml")
 
-        # Get property information
-        # title_details = soup.select_one("#detail-title")
-        # details_section = soup.select_one("section#detail-details")
-
         # 1. locality: str = None
         # label = soup.select_one('th:-soup-contains("locality")')
         # self._property.locality = label.next_sibling.next_sibling.contents[0].strip()
-        self._property.locality = self.get_detail(soup, 'locality')
+        self._property.locality = self.get_detail(soup, "locality")
+        # if locality not specified in the info table, get it from the url
+        if self._property.locality is None:
+            self._property.locality = self._property.page_url.split("/")[7]
 
         # 2. property_type: str = None
         property_type = soup.select_one(".classified__title").text.strip().lower()
@@ -119,22 +118,48 @@ class ImmoWebProp(ImmoPropScraper):
         elif "apartment" in property_type:
             self._property.property_type = "apartment"
 
-        # # property type
-        # property_type = title_details.select_one(".category").text.strip().lower()
-        # if "woning" in property_type:
-        #     self._property.property_type = "house"
-        # elif property_type in ["appartement", "loft", "gelijkvloers"]:
-        #     self._property.property_type = "appartment"
-        #     self._property.property_subtype = property_type
-        # else:
-        #     self._property.property_type = "other"
-        #     self._property.property_subtype = property_type
-
         # 3. property_subtype: str = None
+        house_subtype = [
+            "Bungalow",
+            "Chalet",
+            "Castle",
+            "Farmhouse",
+            "Country cottage",
+            "Exceptional property",
+            "Apartment block",
+            "Mixed-use building",
+            "Town-house",
+            "Mansion",
+            "Villa",
+            "Other properties",
+            "Country house",
+            "Pavilion",
+        ]
+
+        apartment_subtype = [
+            "Ground floor",
+            "Duplex",
+            "Triplex",
+            "Studio",
+            "Penthouse",
+            "Loft",
+            "Kot",
+            "Service flat",
+        ]
+
+        property_subtype = soup.select_one(".classified__title").text.strip().lower()
+        if property_subtype in house_subtype:
+            self._property.property_subtype = property_subtype
+            self._property.property_type = "house"
+        elif property_subtype in apartment_subtype:
+            self._property.property_subtype = property_subtype
+            self._property.property_type = "apartment"
 
         # 4. price: float = None
         price = soup.select_one('span:-soup-contains("€")').text
-        price = price.replace("€", "").replace(",", "") # convert into right number format
+        price = price.replace("€", "").replace(
+            ",", ""
+        )  # convert into right number format
         self._property.price = float(price)
 
         # 5. sale_type: str = None
@@ -142,90 +167,82 @@ class ImmoWebProp(ImmoPropScraper):
         # 6. number_rooms: int = None
         # label = soup.select_one('th:-soup-contains("Bedrooms")')
         # self._property.number_rooms = int(label.next_sibling.next_sibling.contents[0].strip())
-        self._property.number_rooms = self.get_detail(soup, 'Bedrooms')
+        self._property.number_rooms = self.get_detail(soup, "Bedrooms")
         # Convert number_rooms into integer if not None
-        self._property.number_rooms = int(self._property.number_rooms) if self._property.number_rooms else None
-
+        self._property.number_rooms = (
+            int(self._property.number_rooms) if self._property.number_rooms else None
+        )
 
         # 7. area: float = None
         # label = soup.select_one('th:-soup-contains("area")')
         # self._property.area = float(label.next_sibling.next_sibling.contents[0].strip())
-        self._property.area = self.get_detail(soup, 'area')
+        self._property.area = self.get_detail(soup, "area")
         # Convert area into float if not None
-        self._property.area = int(self._property.area) if self._property.area else None
+        self._property.area = (
+            float(self._property.area) if self._property.area else None
+        )
 
         # 8. fully_equipped_kitchen: bool = None
-        kitchen_type = self.get_detail(soup, 'Kitchen type')
+        kitchen_type = self.get_detail(soup, "Kitchen type")
         # Determine if the kitchen is fully equipped or not
+        not_installed_labels = ["notinstalled", "uninstalled", "not installed"]
+        installed_labels = ["fully", "hyper", "installed"]
         if kitchen_type is not None:
-            self._property.fully_equipped_kitchen = True if 'fully' in kitchen_type else False
+            if any(label in kitchen_type for label in not_installed_labels):
+                self._property.fully_equipped_kitchen = False
+            elif any(label in kitchen_type for label in installed_labels):
+                self._property.fully_equipped_kitchen = True
 
         # 9. is_furnished: bool = None
+        self._property.is_furnished = self.get_detail(soup, "Furnished")
+
         # 10. has_open_fire: bool = None
+        fireplace = self.get_detail(soup, "fireplace")
+        # Determine if there is a fireplace
+        if fireplace is not None:
+            self._property.has_open_fire = True if int(fireplace) > 0 else False
+
         # 11. has_terrace: bool = None
-        # 12. has_garden: bool = None
-        # 13. land_surface: float = None
-        # 14. land_plot_area: float = None
-        # 15. number_facades: int = None
-        self._property.number_facades = self.get_detail(soup, 'frontage')
+        terrace = self.get_detail(soup, "Terrace")
+        # Determine if there is a terrace
+        if terrace is not None:
+            self._property.has_terrace = True if float(terrace) > 0 else False
+
+        # 12. terrace_area: float = None
+        self._property.terrace_area = float(terrace) if terrace else None
+
+        # 13. has_garden: bool = None
+        garden = self.get_detail(soup, "Garden")
+        # Determine if there is a garden
+        if garden is not None:
+            self._property.has_garden = True if float(garden) > 0 else False
+
+        # 14. garden_area: float = None
+        self._property.garden_area = float(garden) if garden else None
+
+        # 15. land_surface: float = None
+
+        # 16. land_plot_area: float = None
+        self._property.land_plot_area = self.get_detail(soup, "Surface of the plot")
+        # Convert area into float if not None
+        self._property.land_plot_area = (
+            float(self._property.land_plot_area)
+            if self._property.land_plot_area
+            else None
+        )
+
+        # 17. number_facades: int = None
+        self._property.number_facades = self.get_detail(soup, "frontage")
         # Convert number_facades into integer if not None
-        self._property.number_facades = int(self._property.number_facades) if self._property.number_facades else None
+        self._property.number_facades = (
+            int(self._property.number_facades)
+            if self._property.number_facades
+            else None
+        )
 
-        # 16. has_swimming_pool: bool = None
-        # 17. building_state: str = None
-        self._property.building_state = self.get_detail(soup, 'condition')
+        # 18. has_swimming_pool: bool = None
+        self._property.has_swimming_pool = self.get_detail(soup, "Swimming")
 
-        # # locality: get place name from address
-        # self._property.locality = (
-        #     title_details.select_one(".address")
-        #     .text.strip()
-        #     .split(" ")[-1]
-        #     .capitalize()
-        # )
+        # 19. building_state: str = None
+        self._property.building_state = self.get_detail(soup, "condition")
 
-        # # simple function to get values from details table
-        # def get_detail(name):
-        #     """Get detail from table by name."""
-        #     # find cell
-        #     tag = details_section.find("dt", text=re.compile(name, re.IGNORECASE))
-        #     if tag is None:
-        #         return False
-        #     # info is in sibling dd tag
-        #     data = tag.parent.dd.text.strip()
-        #     # convert booleans
-        #     if data in ["ja", "nee"]:
-        #         return True if data == "ja" else "False"
-        #     else:
-        #         return data
-
-        # # price
-        # price = get_detail("prijs")
-        # price = (
-        #     price.replace("€ ", "").replace(".", "").replace(",", ".")
-        # )  # convert to English number format
-        # self._property.price = float(price)
-
-        # # number of rooms
-        # rooms = int(get_detail("slaapkamer"))
-        # self._property.number_rooms = rooms
-
-        # # area
-        # area = get_detail("bewoonbare opp")
-        # area = float(price.replace(" m²", "").replace(".", "").replace(",", "."))
-        # self._property.area = area
-
-        # # Kitchen
-        # kitchen_info = get_detail("type keuken")
-        # self._property.fully_equipped_kitchen = kitchen_info
-
-        # # Is furnished? Not specified on website but probably not
-        # self._property.is_furnished = False
-
-        # # for open fire, just look if mentioned in description
-        # self._property.has_open_fire = (
-        #     "open haard" in soup.select_one("#description").text.lower()
-        # )
-
-        # self._property.has_terrace = get_detail("terras")
-
-        # pass
