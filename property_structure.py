@@ -16,7 +16,9 @@ class Property:
     is_furnished: bool = None
     has_open_fire: bool = None
     has_terrace: bool = None
+    terrace_area: float = None
     has_garden: bool = None
+    garden_area: float = None
     land_surface: float = None
     land_plot_area: float = None
     number_facades: int = None
