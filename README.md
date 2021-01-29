@@ -10,6 +10,7 @@ challenge-collecting-data-group5/
 |-- main.py :to run all the scripts in the *scrapers* directory
 |-- property_structure.py :explicit the data structure of any property
 |-- scrapers/ :directory contains all the scripts to scrap the websites
+|-- data/ :directory contains the data (list of url links and real estate data)
 |-- test/
 |   |-- init.py
 |   |   |-- test_main.py :to run all the unit tests
@@ -44,7 +45,6 @@ The deadline to complete it is scheduled to `29/01/2021 at 4 p.m.`
 - [ ] Export the data into csv-file
 
 
-
 ## Who?
 This project is carried out by **Group 5** from Theano 2.27 promotion at BeCode.
 Group 5 is comprised of:
@@ -53,3 +53,4 @@ Group 5 is comprised of:
 - Vincent Rolin
 
 ## Pending things to do
+- unittesting
