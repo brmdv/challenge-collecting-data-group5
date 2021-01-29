@@ -14,7 +14,7 @@ class ImmoHansList(ImmoListScraper):
         self._download_page()
 
         # parse with Beautifulsoup
-        soup = bs(self._data)
+        soup = bs(self._data, "html.parser")
 
         # Get listed links
         link_tags = soup.main.find_all("a", attrs={"class": "property-content"})
@@ -35,7 +35,7 @@ class ImmoHansProp(ImmoPropScraper):
         self._download_page()
 
         # parse data
-        soup = bs(self._data)
+        soup = bs(self._data, "html.parser")
 
         # get information
         title_details = soup.select_one("#detail-title")
