@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Dict
 
 
 @dataclass
@@ -34,7 +35,11 @@ class Property:
         Property._count += 1
 
     def __str__(self) -> str:
-        return "Property" + f"({self.property_type})" if self.property_type else ""
+        return (
+            f"Property {self.id}" + f" ({self.property_type})"
+            if self.property_type
+            else ""
+        )
 
     def format_to_csv(self) -> str:
         """

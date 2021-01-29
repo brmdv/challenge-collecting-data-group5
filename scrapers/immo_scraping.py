@@ -33,7 +33,6 @@ class ImmoPropScraper(ImmoScraper):
         """
         super().__init__(page_url)
         self._property = Property()
-        self._scraped = False
 
     def scrape(self):
         """Reimplement this method for every scraper. It should get all needed
@@ -45,7 +44,7 @@ class ImmoPropScraper(ImmoScraper):
 
     # def format_to_csv(self) -> str:
     #     """
-    #     Method that formats the property information into a comma-delimited string 
+    #     Method that formats the property information into a comma-delimited string
     #     in order to be exported to a csv file.
     #     """
     #     property_info_list = self._property.__dict__.values()
