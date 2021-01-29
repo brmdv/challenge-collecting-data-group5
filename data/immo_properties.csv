@@ -1,0 +1,16 @@
+locality,property_type,property_subtype,price,sale_type,number_rooms,area,fully_equipped_kitchen,is_furnished,has_open_fire,has_terrace,terrace_area,has_garden,garden_area,land_surface,land_plot_area,number_facades,has_swimming_pool,building_state,source_url
+Antwerpen,house,,749000.0,,3,314.0,,False,False,True,10.0,False,,,84.0,,False,Gerenoveerd,https://www.hansimmo.be/woning-te-koop-in-antwerpen/9678
+Antwerpen,other,opslagruimte,135000.0,,0,192.0,,False,False,False,,False,,,,,False,False,https://www.hansimmo.be/opslagruimte-te-koop-in-antwerpen/9677
+Antwerpen,apartment,loft,699000.0,,3,338.0,Kasten met toestellen,False,False,True,40.0,False,,,,,False,Deels te renoveren,https://www.hansimmo.be/loft-te-koop-in-antwerpen/9676
+Edegem,house,,325000.0,,1,88.0,Kasten met toestellen,False,False,False,,False,,,166.0,,False,Deels te renoveren,https://www.hansimmo.be/woning-te-koop-in-edegem/9675
+Stabroek,house,,399000.0,,3,242.0,Alle comfort,False,False,True,20.0,False,,,345.0,,False,Gerenoveerd,https://www.hansimmo.be/woning-te-koop-in-stabroek/9674
+Antwerpen,other,opbrengsteigendom,749000.0,,3,314.0,,False,False,True,10.0,False,,,84.0,,False,Gerenoveerd,https://www.hansimmo.be/opbrengsteigendom-te-koop-in-antwerpen/9673
+Berchem,apartment,gelijkvloers,325900.0,,2,107.0,Volledig ingebouwd,False,False,True,21.0,False,,,,,False,Gerenoveerd,https://www.hansimmo.be/gelijkvloers-te-koop-in-berchem/9670
+Antwerpen,apartment,appartement,349900.0,,2,115.0,Hyper-geïnstalleerd,False,False,True,6.0,False,,,,,False,Gerenoveerd,https://www.hansimmo.be/appartement-te-koop-in-antwerpen/9669
+Antwerpen,apartment,appartement,349900.0,,2,115.0,Hyper-geïnstalleerd,False,False,True,6.0,False,,,,,False,Gerenoveerd,https://www.hansimmo.be/appartement-te-koop-in-antwerpen/9668
+Deurne,house,,285000.0,,4,161.0,Alle comfort,False,False,False,,False,,,98.0,,False,Direct bewoonbaar,https://www.hansimmo.be/woning-te-koop-in-deurne/9667
+Deurne,other,opbrengsteigendom,285000.0,,4,161.0,Alle comfort,False,False,False,,False,,,98.0,,False,Direct bewoonbaar,https://www.hansimmo.be/opbrengsteigendom-te-koop-in-deurne/9666
+Antwerpen,apartment,appartement,164900.0,,2,88.0,Kasten met toestellen,False,False,True,4.0,False,,,,,False,Direct bewoonbaar,https://www.hansimmo.be/appartement-te-koop-in-antwerpen/9664
+Antwerpen,apartment,appartement,298000.0,,2,102.0,,False,False,True,3.0,False,,,,,False,Direct bewoonbaar,https://www.hansimmo.be/appartement-te-koop-in-antwerpen/9663
+Borsbeek,other,gemengd gebouw,950000.0,,0,152.0,Kasten met toestellen,False,False,True,43.0,False,,,932.0,,False,Direct bewoonbaar,https://www.hansimmo.be/gemengd-gebouw-te-koop-in-borsbeek/9661
+Deurne,apartment,appartement,169000.0,,2,96.0,Alle comfort,False,False,True,4.0,False,,,100.0,,False,Direct bewoonbaar,https://www.hansimmo.be/appartement-te-koop-in-deurne/9657

@@ -121,11 +121,17 @@ class ImmoWebProp(ImmoPropScraper):
             self._property.locality = self.page_url.split("/")[7]
 
         # 2. property_type: str = None
-        property_type = soup.select_one(".classified__title").text.strip().lower()
-        if "house" in property_type or "house" in self.page_url:
-            self._property.property_type = "house"
-        elif "apartment" in property_type or "apartment" in self.page_url:
-            self._property.property_type = "apartment"
+        try:
+            property_type = soup.select_one(".classified__title").text.strip().lower()
+            if "house" in property_type or "house" in self.page_url:
+                self._property.property_type = "house"
+            elif "apartment" in property_type or "apartment" in self.page_url:
+                self._property.property_type = "apartment"
+        except:
+            if "house" in self.page_url:
+                self._property.property_type = "house"
+            elif "apartment" in self.page_url:
+                self._property.property_type = "apartment"
 
         # 3. property_subtype: str = None
         house_subtype = [
@@ -165,13 +171,16 @@ class ImmoWebProp(ImmoPropScraper):
             self._property.property_type = "apartment"
 
         # 4. price: float = None
-        price = soup.select_one('span:-soup-contains("€")').text
-        price = price.replace("€", "").replace(
-            ",", ""
-        )  # convert into right number format
-        # take the min price available
-        min_price = min(re.findall("(\d+)", price))
-        self._property.price = float(min_price)
+        try:
+            price = soup.select_one('span:-soup-contains("€")').text
+            price = price.replace("€", "").replace(
+                ",", ""
+            )  # convert into right number format
+            # take the min price available
+            min_price = min(re.findall("(\d+)", price))
+            self._property.price = float(min_price)
+        except:
+            self._property.price = None
 
 
         # 5. sale_type: str = None

@@ -38,7 +38,7 @@ for thr in hans_threads:
 
 # IMMOWEB
 # load links from file
-with open(os.path.join(output_path, "immoweb.txt"), "r") as file:
+with open(os.path.join(output_path, "immoweb_links.txt"), "r") as file:
     immoweb_links = file.read().split()
 
 # create Scrapers
@@ -86,8 +86,8 @@ with open(os.path.join(output_path, "immo_properties.csv"), "w") as outfile:
     )
     data_file.writeheader()
 
-    # write hans properties to file
-    for thread in hans_threads:
+    # write hans and immoweb properties to file
+    for thread in hans_threads + immoweb_threads:
         # get from thread
         property = thread.scraper.get_property()
         # write as csv
