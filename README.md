@@ -40,7 +40,7 @@ The deadline to complete it is scheduled to `29/01/2021 at 4 p.m.`
 
 ## How?
 - [x] Create the project structure
-- [ ] Scrape real estate websites
+- [x] Scrape real estate websites
 - [ ] Build the Belgian real estate database
 - [ ] Export the data into csv-file
 
@@ -53,4 +53,6 @@ Group 5 is comprised of:
 - Vincent Rolin
 
 ## Pending things to do
+- fix bugs in the scraping
+- fix bugs in texporting to csv
 - unittesting
