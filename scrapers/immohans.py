@@ -132,7 +132,7 @@ class ImmoHansProp(ImmoPropScraper):
         if self._property.has_garden:
             try:
                 # garden area is saved in same cell
-                self._property.garden = convert_number(garden_area)
+                self._property.garden = convert_number(get_detail("tuin"))
             except:
                 pass
 

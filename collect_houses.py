@@ -4,6 +4,7 @@ from threading import Thread, Lock
 
 from scrapers.immo_scraping import ImmoPropScraper
 from scrapers.immohans import ImmoHansProp
+from scrapers.immoweb import ImmoWebProp
 
 # Setup
 print_lock = Lock()
@@ -34,8 +35,25 @@ hans_threads = [ThreadedScraping(scraper) for scraper in hans_scrapers]
 for thr in hans_threads:
     thr.start()
 
+
+# IMMOWEB
+# load links from file
+with open(os.path.join(output_path, "immoweb.txt"), "r") as file:
+    immoweb_links = file.read().split()
+
+# create Scrapers
+immoweb_scrapers = [ImmoWebProp(url) for url in immoweb_links]
+
+# Create threads
+immoweb_threads = [ThreadedScraping(scraper) for scraper in immoweb_scrapers]
+
+# start threads
+for thr in immoweb_threads:
+    thr.start()
+
+
 # make sure all threads are done before continueing
-for thr in hans_threads:
+for thr in hans_threads + immoweb_threads:
     thr.join()
 
 
