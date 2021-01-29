@@ -30,10 +30,20 @@ The deadline to complete it is scheduled to `29/01/2021 at 4 p.m.`
 - [ ] Build the Belgian real estate database
 - [ ] Export the data into csv-file
 
+#### Object Oriented Scraping 
+
+We opted for a OOP approach to the challenge.
+
+Every property for sale is saved in a dataclass. In this way, the fields can be
+typed, and general export methods can be written. The scraping itself is also
+OO. As every website is different, every scraper has to be custom made. But
+they do share some basic functionality. So we made a scraper base class from
+which all scrapers inherit.
+
 ### Who?
 This project is carried out by **Group 5** from Theano 2.27 promotion at BeCode.
 Group 5 is comprised of:
-- Bram de Vroey
+- Bram De Vroey
 - Van Frausum Derrick
 - Vincent Rolin
 
